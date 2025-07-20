@@ -26,12 +26,13 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 	/home/rocky/nkp-v2.15.0/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
 		--additional-trust-bundle="$(base64 -w0 ${COMBINED_TRUST_BUNDLE})" \
+		--namespace="${WORKSPACE_NAMESPACE}" \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
-		--control-plane-subnets="aux-1" \
+		--control-plane-subnets="${AHV_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
 		--control-plane-pc-categories='environment=development,nodetype=controlplane' \
@@ -40,7 +41,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--worker-replicas=4 \
 		--worker-vm-image="${VM_IMAGE_NAME}" \
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
-		--worker-subnets="aux-1" \
+		--worker-subnets="${AHV_SUBNET}" \
 		--worker-pc-project=${PC_PROJECT} \
 		--worker-pc-categories='environment=development,nodetype=worker' \
 		--worker-vcpus=8 \
@@ -49,8 +50,8 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--ssh-username=konvoy \
 		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
 		--registry-url="${LOCAL_REGISTRY}" \
-		--registry-username=dummy \
-		--registry-password=dummy \
+		--registry-username="${HARBOR_ROBOT_USER}" \
+		--registry-password="${HARBOR_REGISTRY_SECRET}" \
 		--registry-mirror-url="${MIRROR_REGISTRY}" \
 		--extra-sans='prism.nutanix.local' \
 		--verbose=5 \
@@ -61,12 +62,13 @@ else
 	/home/rocky/nkp-v2.15.0/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
 		--additional-trust-bundle="$(base64 -w0 ${COMBINED_TRUST_BUNDLE})" \
+		--namespace="${WORKSPACE_NAMESPACE}" \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
-		--control-plane-subnets="primary-${HPOC_CLUSTER}" \
+		--control-plane-subnets="${AHV_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
 		--control-plane-pc-categories='environment=development,nodetype=controlplane' \
@@ -75,7 +77,7 @@ else
 		--worker-replicas=4 \
 		--worker-vm-image="${VM_IMAGE_NAME}" \
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
-		--worker-subnets="primary-${HPOC_CLUSTER}" \
+		--worker-subnets="${AHV_SUBNET}" \
 		--worker-pc-project=${PC_PROJECT} \
 		--worker-pc-categories='environment=development,nodetype=worker' \
 		--worker-vcpus=8 \
@@ -84,8 +86,8 @@ else
 		--ssh-username=konvoy \
 		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
 		--registry-url="${LOCAL_REGISTRY}" \
-		--registry-username=dummy \
-		--registry-password=dummy \
+		--registry-username="${HARBOR_ROBOT_USER}" \
+		--registry-password="${HARBOR_REGISTRY_SECRET}" \
 		--registry-mirror-url="${MIRROR_REGISTRY}" \
 		--extra-sans='prism.nutanix.local' \
 		--verbose=5 
