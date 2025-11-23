@@ -23,10 +23,10 @@ source ${CONFIG_FILE}
 
 if [[ "${DRYRUN}" == "TRUE" ]]; then
 
-	/home/rocky/nkp-v2.15.0/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
+	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
 		--self-managed \
-		--additional-trust-bundle="$(base64 -w0 ${COMBINED_TRUST_BUNDLE})" \
+		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
@@ -49,20 +49,15 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
 		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
-		--registry-url="${LOCAL_REGISTRY}" \
-		--registry-username=dummy \
-		--registry-password=dummy \
-		--registry-mirror-url="${MIRROR_REGISTRY}" \
-		--extra-sans='prism.nutanix.local' \
 		--verbose=5 \
 		--dry-run \
 		--output=yaml 
 
 else
-	/home/rocky/nkp-v2.15.0/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
+	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
 		--self-managed \
-		--additional-trust-bundle="$(base64 -w0 ${COMBINED_TRUST_BUNDLE})" \
+		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
@@ -85,10 +80,6 @@ else
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
 		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
-		--registry-url="${LOCAL_REGISTRY}" \
-		--registry-username=dummy \
-		--registry-password=dummy \
-		--registry-mirror-url="${MIRROR_REGISTRY}" \
 		--extra-sans='prism.nutanix.local' \
 		--verbose=5 
 fi
