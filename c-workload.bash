@@ -4,7 +4,7 @@
 # Date			Changes
 # -------		------------
 # 22nd June 2025	Creation
-#
+# 23rd Nov 2025	Updated to v2.16.1
 #
 ######################################################################################
 
@@ -23,11 +23,12 @@ source ${CONFIG_FILE}
 
 if [[ "${DRYRUN}" == "TRUE" ]]; then
 
-	/home/rocky/nkp-v2.15.0/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
+	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
-		--additional-trust-bundle="$(base64 -w0 ${COMBINED_TRUST_BUNDLE})" \
+		--insecure \
 		--namespace="${WORKSPACE_NAMESPACE}" \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
+		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.16.1.tar, ${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.16.1.tar" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
@@ -49,21 +50,17 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
 		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
-		--registry-url="${LOCAL_REGISTRY}" \
-		--registry-username="${HARBOR_ROBOT_USER}" \
-		--registry-password="${HARBOR_REGISTRY_SECRET}" \
-		--registry-mirror-url="${MIRROR_REGISTRY}" \
-		--extra-sans='prism.nutanix.local' \
 		--verbose=5 \
 		--dry-run \
 		--output=yaml 
 
 else
-	/home/rocky/nkp-v2.15.0/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
+	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
-		--additional-trust-bundle="$(base64 -w0 ${COMBINED_TRUST_BUNDLE})" \
+		--insecure \
 		--namespace="${WORKSPACE_NAMESPACE}" \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
+		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.16.1.tar, ${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.16.1.tar" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
@@ -85,11 +82,6 @@ else
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
 		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
-		--registry-url="${LOCAL_REGISTRY}" \
-		--registry-username="${HARBOR_ROBOT_USER}" \
-		--registry-password="${HARBOR_REGISTRY_SECRET}" \
-		--registry-mirror-url="${MIRROR_REGISTRY}" \
-		--extra-sans='prism.nutanix.local' \
 		--verbose=5 
 fi
 

@@ -4,7 +4,7 @@
 # Date			Changes
 # -------		------------
 # 22nd June 2025	Creation
-#
+# 23rd Nov 2025	Updated to v2.16.1
 #
 ######################################################################################
 
@@ -28,6 +28,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
+		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.16.1.tar, ${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.16.1.tar" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
@@ -59,6 +60,7 @@ else
 		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
+		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.16.1.tar, ${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.16.1.tar" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
