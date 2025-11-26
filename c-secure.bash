@@ -82,7 +82,6 @@ else
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
 		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
-		--extra-sans='prism.nutanix.local' \
 		--verbose=5 
 fi
 
