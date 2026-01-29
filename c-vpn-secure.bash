@@ -33,7 +33,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
-		--control-plane-subnets="primary-${HPOC_CLUSTER}" \
+		--control-plane-subnets="${VPC_CONTROLPLANE_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
 		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
@@ -42,7 +42,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--worker-replicas=4 \
 		--worker-vm-image="${VM_IMAGE_NAME}" \
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
-		--worker-subnets="primary-${HPOC_CLUSTER}" \
+		--worker-subnets=${VPC_WORKER_SUBNET} \
 		--worker-pc-project=${PC_PROJECT} \
 		--worker-pc-categories='Environment=Dev,nodetype=worker' \
 		--worker-vcpus=8 \
@@ -67,7 +67,7 @@ else
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
-		--control-plane-subnets="primary-${HPOC_CLUSTER}" \
+		--control-plane-subnets="${VPC_CONTROLPLANE_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
 		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
@@ -76,7 +76,7 @@ else
 		--worker-replicas=4 \
 		--worker-vm-image="${VM_IMAGE_NAME}" \
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
-		--worker-subnets="primary-${HPOC_CLUSTER}" \
+		--worker-subnets=${VPC_WORKER_SUBNET} \
 		--worker-pc-project=${PC_PROJECT} \
 		--worker-pc-categories='Environment=Dev,nodetype=worker' \
 		--worker-vcpus=8 \
