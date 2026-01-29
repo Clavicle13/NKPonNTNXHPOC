@@ -25,7 +25,6 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 
 	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
-		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
 		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
@@ -59,7 +58,6 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 else
 	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
-		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
 		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
