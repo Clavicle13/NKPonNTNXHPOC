@@ -28,7 +28,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
-		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.16.1.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.16.1.tar" \
+		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
@@ -36,7 +36,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--control-plane-subnets="primary-${HPOC_CLUSTER}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
-		--control-plane-pc-categories='environment=development,nodetype=controlplane' \
+		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
 		--control-plane-vcpus=4 \
 		--control-plane-memory=16 \
 		--worker-replicas=4 \
@@ -44,12 +44,14 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
 		--worker-subnets="primary-${HPOC_CLUSTER}" \
 		--worker-pc-project=${PC_PROJECT} \
-		--worker-pc-categories='environment=development,nodetype=worker' \
+		--worker-pc-categories='Environment=Dev,nodetype=worker' \
 		--worker-vcpus=8 \
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
 		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
+		--extra-sans=${FloatingIP_APIServer} \
+		--cluster-hostname=${FloatingIP_LBFirstIP}\
 		--verbose=5 \
 		--dry-run \
 		--output=yaml 
@@ -60,7 +62,7 @@ else
 		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
-		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.16.1.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.16.1.tar" \
+		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
@@ -68,7 +70,7 @@ else
 		--control-plane-subnets="primary-${HPOC_CLUSTER}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
-		--control-plane-pc-categories='environment=development,nodetype=controlplane' \
+		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
 		--control-plane-vcpus=4 \
 		--control-plane-memory=16 \
 		--worker-replicas=4 \
@@ -76,12 +78,14 @@ else
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
 		--worker-subnets="primary-${HPOC_CLUSTER}" \
 		--worker-pc-project=${PC_PROJECT} \
-		--worker-pc-categories='environment=development,nodetype=worker' \
+		--worker-pc-categories='Environment=Dev,nodetype=worker' \
 		--worker-vcpus=8 \
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
 		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
+		--extra-sans=${FloatingIP_APIServer} \
+		--cluster-hostname=${FloatingIP_LBFirstIP}\
 		--verbose=5 
 fi
 
