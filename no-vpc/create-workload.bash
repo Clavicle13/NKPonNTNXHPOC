@@ -10,7 +10,7 @@
 
 ######################################################################################
 
-CONFIG_FILE="${HOME}/scripts/nkp-workload-config.conf"
+CONFIG_FILE="nkp-workload.conf"
 
 if [[ ! -f "${CONFIG_FILE}" ]]; then
         echo "Unable to locate default configuration file ${CONFIG_FILE}" >&2
@@ -36,7 +36,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--control-plane-subnets="${AHV_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
-		--control-plane-pc-categories='environment=development,nodetype=controlplane' \
+		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
 		--control-plane-vcpus=4 \
 		--control-plane-memory=16 \
 		--worker-replicas=4 \
@@ -44,7 +44,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
 		--worker-subnets="${AHV_SUBNET}" \
 		--worker-pc-project=${PC_PROJECT} \
-		--worker-pc-categories='environment=development,nodetype=worker' \
+		--worker-pc-categories='Environment=Dev,nodetype=worker' \
 		--worker-vcpus=8 \
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
@@ -68,7 +68,7 @@ else
 		--control-plane-subnets="${AHV_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
-		--control-plane-pc-categories='environment=development,nodetype=controlplane' \
+		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
 		--control-plane-vcpus=4 \
 		--control-plane-memory=16 \
 		--worker-replicas=4 \
@@ -76,7 +76,7 @@ else
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
 		--worker-subnets="${AHV_SUBNET}" \
 		--worker-pc-project=${PC_PROJECT} \
-		--worker-pc-categories='environment=development,nodetype=worker' \
+		--worker-pc-categories='Environment=Dev,nodetype=worker' \
 		--worker-vcpus=8 \
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
