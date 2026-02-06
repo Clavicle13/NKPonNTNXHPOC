@@ -10,7 +10,7 @@
 
 ######################################################################################
 
-CONFIG_FILE="${HOME}/scripts/nkp-vpc-mgmtcluster-config.conf"
+CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/nkp-vpc-mgmtcluster-config.conf"
 
 if [[ ! -f "${CONFIG_FILE}" ]]; then
         echo "Unable to locate default configuration file ${CONFIG_FILE}" >&2
@@ -49,7 +49,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
-		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
+		--ssh-public-key-file=${HOME}/.ssh/id_rsa.pub \
 		--extra-sans=${FloatingIP_APIServer} \
 		--verbose=5 \
 		--dry-run \
@@ -82,7 +82,7 @@ else
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
-		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
+		--ssh-public-key-file=${HOME}/.ssh/id_rsa.pub \
 		--extra-sans=${FloatingIP_APIServer} \
 		--verbose=5 
 fi
