@@ -10,7 +10,7 @@
 
 ######################################################################################
 
-CONFIG_FILE="${HOME}/scripts/nkp-vpc-mgmtcluster-config.conf"
+CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/nkp-vpc-workcluster-config.conf"
 
 if [[ ! -f "${CONFIG_FILE}" ]]; then
         echo "Unable to locate default configuration file ${CONFIG_FILE}" >&2
@@ -29,6 +29,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
 		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
 		--control-plane-replicas=3 \
+		--namespace="${WORKSPACE_NAMESPACE}" \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
@@ -48,9 +49,8 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
-		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
+		--ssh-public-key-file=${HOME}/.ssh/id_rsa.pub \
 		--extra-sans=${FloatingIP_APIServer} \
-		--cluster-hostname=${FloatingIP_LBFirstIP}\
 		--verbose=5 \
 		--dry-run \
 		--output=yaml 
@@ -62,6 +62,7 @@ else
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
 		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
 		--control-plane-replicas=3 \
+		--namespace="${WORKSPACE_NAMESPACE}" \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
@@ -81,9 +82,8 @@ else
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
 		--ssh-username=konvoy \
-		--ssh-public-key-file=/home/rocky/.ssh/id_rsa.pub \
+		--ssh-public-key-file=${HOME}/.ssh/id_rsa.pub \
 		--extra-sans=${FloatingIP_APIServer} \
-		--cluster-hostname=${FloatingIP_LBFirstIP}\
 		--verbose=5 
 fi
 
