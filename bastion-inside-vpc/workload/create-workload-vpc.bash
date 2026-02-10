@@ -10,13 +10,21 @@
 
 ######################################################################################
 
-CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/workload/nkp-vpc-workload-config.conf"
+if [[ -z "$(echo ${VPC} |grep '^vpc[1-9]$')" ]]; then
+        echo "Mandatory VPC parameter missing"
+        exit 5
+fi
+
+CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/workload/${VPC}/nkp-workload-${VPC}.conf"
 
 if [[ ! -f "${CONFIG_FILE}" ]]; then
         echo "Unable to locate default configuration file ${CONFIG_FILE}" >&2
         exit 3
 fi
 
+######################################################################################
+
+echo "Using ${CONFIG_FILE} ..."
 source ${CONFIG_FILE}
 
 ######################################################################################

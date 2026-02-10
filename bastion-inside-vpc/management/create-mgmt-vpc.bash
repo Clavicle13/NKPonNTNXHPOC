@@ -10,18 +10,28 @@
 
 ######################################################################################
 
-CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/management/nkp-vpc-mgmtcluster-config.conf"
+if [[ -z "$(echo ${VPC} |grep '^vpc[1-9]$')" ]]; then
+        echo "Mandatory VPC parameter missing"
+        exit 5
+fi
+
+CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/management/${VPC}/nkp-mgmt-${VPC}.conf"
 
 if [[ ! -f "${CONFIG_FILE}" ]]; then
         echo "Unable to locate default configuration file ${CONFIG_FILE}" >&2
         exit 3
 fi
 
+######################################################################################
+
+echo "Using ${CONFIG_FILE} ..."
 source ${CONFIG_FILE}
 
 ######################################################################################
 
 if [[ "${DRYRUN}" == "TRUE" ]]; then
+
+	set +x
 
 	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
@@ -55,7 +65,12 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--dry-run \
 		--output=yaml 
 
+	set -x
+
 else
+
+	set +x
+
 	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
 		--self-managed \
@@ -85,6 +100,8 @@ else
 		--ssh-public-key-file=${HOME}/.ssh/id_rsa.pub \
 		--extra-sans=${FloatingIP_APIServer} \
 		--verbose=5 
+
+	set -x
 fi
 
 ######################################################################################
