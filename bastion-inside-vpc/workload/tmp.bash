@@ -10,7 +10,7 @@
 
 ######################################################################################
 
-CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/management/nkp-vpc-mgmtcluster-config.conf"
+CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/nkp-vpc-workcluster-config.conf"
 
 if [[ ! -f "${CONFIG_FILE}" ]]; then
         echo "Unable to locate default configuration file ${CONFIG_FILE}" >&2
@@ -25,18 +25,18 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 
 	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
-		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
-		--bundle="${NKP_BUNDLES}" \
+		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
 		--control-plane-replicas=3 \
+		--namespace="${WORKSPACE_NAMESPACE}" \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
 		--control-plane-subnets="${VPC_CONTROLPLANE_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
-		--control-plane-pc-categories="${CONTROLPLANE_PC_CATEGORIES}" \
+		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
 		--control-plane-vcpus=4 \
 		--control-plane-memory=16 \
 		--worker-replicas=4 \
@@ -44,7 +44,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
 		--worker-subnets=${VPC_WORKER_SUBNET} \
 		--worker-pc-project=${PC_PROJECT} \
-		--worker-pc-categories="${WORKERNODE_PC_CATEGORIES}" \
+		--worker-pc-categories='Environment=Dev,nodetype=worker' \
 		--worker-vcpus=8 \
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
@@ -58,18 +58,18 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 else
 	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
-		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
-		--bundle="${NKP_BUNDLES}" \
+		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
 		--control-plane-replicas=3 \
+		--namespace="${WORKSPACE_NAMESPACE}" \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
 		--control-plane-subnets="${VPC_CONTROLPLANE_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
-		--control-plane-pc-categories="${CONTROLPLANE_PC_CATEGORIES}" \
+		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
 		--control-plane-vcpus=4 \
 		--control-plane-memory=16 \
 		--worker-replicas=4 \
@@ -77,7 +77,7 @@ else
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
 		--worker-subnets=${VPC_WORKER_SUBNET} \
 		--worker-pc-project=${PC_PROJECT} \
-		--worker-pc-categories="${WORKERNODE_PC_CATEGORIES}" \
+		--worker-pc-categories='Environment=Dev,nodetype=worker' \
 		--worker-vcpus=8 \
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \

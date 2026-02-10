@@ -10,7 +10,7 @@
 
 ######################################################################################
 
-CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/nkp-vpc-workcluster-config.conf"
+CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/workload/nkp-vpc-workload-config.conf"
 
 if [[ ! -f "${CONFIG_FILE}" ]]; then
         echo "Unable to locate default configuration file ${CONFIG_FILE}" >&2
@@ -27,16 +27,16 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--airgapped \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
-		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
+		--bundle="${NKP_BUNDLES}" \
 		--control-plane-replicas=3 \
-		--namespace="${WORKSPACE_NAMESPACE}" \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
+		--namespace="${WORKSPACE_NAMESPACE}" \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
 		--control-plane-subnets="${VPC_CONTROLPLANE_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
-		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
+		--control-plane-pc-categories="${CONTROLPLANE_PC_CATEGORIES}" \
 		--control-plane-vcpus=4 \
 		--control-plane-memory=16 \
 		--worker-replicas=4 \
@@ -44,7 +44,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
 		--worker-subnets=${VPC_WORKER_SUBNET} \
 		--worker-pc-project=${PC_PROJECT} \
-		--worker-pc-categories='Environment=Dev,nodetype=worker' \
+		--worker-pc-categories="${WORKERNODE_PC_CATEGORIES}" \
 		--worker-vcpus=8 \
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
@@ -60,16 +60,16 @@ else
 		--airgapped \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
-		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
+		--bundle="${NKP_BUNDLES}" \
 		--control-plane-replicas=3 \
-		--namespace="${WORKSPACE_NAMESPACE}" \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
+		--namespace="${WORKSPACE_NAMESPACE}" \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
 		--control-plane-prism-element-cluster="${HPOC_CLUSTER}" \
 		--control-plane-subnets="${VPC_CONTROLPLANE_SUBNET}" \
 		--kubernetes-service-load-balancer-ip-range="${LOAD_BALANCER_IP_RANGE}" \
 		--control-plane-pc-project=${PC_PROJECT} \
-		--control-plane-pc-categories='Environment=Dev,nodetype=controlplane' \
+		--control-plane-pc-categories="${CONTROLPLANE_PC_CATEGORIES}" \
 		--control-plane-vcpus=4 \
 		--control-plane-memory=16 \
 		--worker-replicas=4 \
@@ -77,7 +77,7 @@ else
 		--worker-prism-element-cluster=${HPOC_CLUSTER} \
 		--worker-subnets=${VPC_WORKER_SUBNET} \
 		--worker-pc-project=${PC_PROJECT} \
-		--worker-pc-categories='Environment=Dev,nodetype=worker' \
+		--worker-pc-categories="${WORKERNODE_PC_CATEGORIES}" \
 		--worker-vcpus=8 \
 		--worker-memory=32 \
 		--csi-storage-container="${CSI_STORAGE_CONTAINER}" \
