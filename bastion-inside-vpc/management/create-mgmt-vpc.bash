@@ -10,7 +10,7 @@
 
 ######################################################################################
 
-CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/nkp-vpc-mgmtcluster-config.conf"
+CONFIG_FILE="${HOME}/scripts/bastion-inside-vpc/management/nkp-vpc-mgmtcluster-config.conf"
 
 if [[ ! -f "${CONFIG_FILE}" ]]; then
         echo "Unable to locate default configuration file ${CONFIG_FILE}" >&2
@@ -28,7 +28,7 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
-		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
+		--bundle="${NKP_BUNDLES}" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
@@ -61,7 +61,7 @@ else
 		--self-managed \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
-		--bundle="${NKP_DIRECTORY}/container-images/kommander-image-bundle-v2.17.0.tar,${NKP_DIRECTORY}/container-images/konvoy-image-bundle-v2.17.0.tar" \
+		--bundle="${NKP_BUNDLES}" \
 		--control-plane-replicas=3 \
 		--control-plane-endpoint-ip=${NKPAPISERVER_VIP} \
 		--control-plane-vm-image="${VM_IMAGE_NAME}" \
