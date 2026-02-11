@@ -31,7 +31,21 @@ source ${CONFIG_FILE}
 
 if [[ "${DRYRUN}" == "TRUE" ]]; then
 
-	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
+        echo "Executing Dry Run with parameters"
+        echo "vpc=${VPC}"
+        echo "NKPCLUSTER_NAME=${NKPCLUSTER_NAME}"
+        echo "NKPAPISERVER_VIP=${NKPAPISERVER_VIP}"
+        echo "FloatingIP_APIServer=${FloatingIP_APIServer}"
+        echo "LOAD_BALANCER_IP_RANGE=${LOAD_BALANCER_IP_RANGE}"
+        echo "VPC_CONTROLPLANE_SUBNET=${VPC_CONTROLPLANE_SUBNET}"
+        echo "PC_PROJECT = ${PC_PROJECT}"
+        echo "HPOC_CLUSTER=${HPOC_CLUSTER}"
+        echo "CSI_STORAGE_CONTAINER=${CSI_STORAGE_CONTAINER}"
+        echo "CONTROLPLANE_PC_CATEGORIES=${CONTROLPLANE_PC_CATEGORIES}"
+        echo "WORKERNODE_PC_CATEGORIES=${WORKERNODE_PC_CATEGORIES}"
+
+	${NKP_DIRECTORY}/cli/nkp create cluster nutanix \
+		--cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
@@ -64,7 +78,21 @@ if [[ "${DRYRUN}" == "TRUE" ]]; then
 		--output=yaml 
 
 else
-	${NKP_DIRECTORY}/cli/nkp create cluster nutanix --cluster-name=${NKPCLUSTER_NAME} \
+        echo "Executing Actual Run with parameters"
+        echo "vpc=${VPC}"
+        echo "NKPCLUSTER_NAME=${NKPCLUSTER_NAME}"
+        echo "NKPAPISERVER_VIP=${NKPAPISERVER_VIP}"
+        echo "FloatingIP_APIServer=${FloatingIP_APIServer}"
+        echo "LOAD_BALANCER_IP_RANGE=${LOAD_BALANCER_IP_RANGE}"
+        echo "VPC_CONTROLPLANE_SUBNET=${VPC_CONTROLPLANE_SUBNET}"
+        echo "PC_PROJECT = ${PC_PROJECT}"
+        echo "HPOC_CLUSTER=${HPOC_CLUSTER}"
+        echo "CSI_STORAGE_CONTAINER=${CSI_STORAGE_CONTAINER}"
+        echo "CONTROLPLANE_PC_CATEGORIES=${CONTROLPLANE_PC_CATEGORIES}"
+        echo "WORKERNODE_PC_CATEGORIES=${WORKERNODE_PC_CATEGORIES}"
+
+	${NKP_DIRECTORY}/cli/nkp create cluster nutanix \
+		--cluster-name=${NKPCLUSTER_NAME} \
 		--airgapped \
 		--insecure \
 		--endpoint="https://${PRISMCENTRAL_ENDPOINT}:9440" \
