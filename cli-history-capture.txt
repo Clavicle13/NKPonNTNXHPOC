@@ -1,0 +1,204 @@
+    1  set -o vi
+    2  ssh-keygen -t rsa -b 1024
+    3  cd .ssh
+    4  vi authorized_keys 
+    5  while true; do ls -ltrgh nkp*; sleep 10; done
+    6  vi ~/.bashrc
+    7  sudo mkdir -p /etc/systemd/system/user@.service.d/
+    8  w
+    9  set -o vi
+   10  sudo vi /etc/systemd/system/user@.service.d/delegate.conf
+   11  sudo cat /etc/systemd/system/user@.service.d/delegate.conf
+   12  uss
+   13  sudo vi /etc/hosts
+   14  ping prism.nutanix.local
+   15   -ltr
+   16  ls -ltr
+   17  gzip -cd nkp-air-gapped-bundle_v2.17.0_linux_amd64.tar.gz |tar xvf -
+   18  udo 
+   19  sudo dnf update -y
+   20  sudo dnf install -y podman
+   21  sudo systemctl enable podman.service
+   22  sudo systemctl start podman.service
+   23  podman ps
+   24  sudo shutdown -h now
+   25  ls -ltr /home/nutanix/nkp-v2.17.0/konvoy-bootstrap-image-v2.17.0.tar 
+   26  podman load -i /home/nutanix/nkp-v2.17.0/konvoy-bootstrap-image-v2.17.0.tar
+   27  ls -ltr
+   28  sudo dnf install -y git
+   29  git clone https://github.com/Clavicle13/NKPonNTNXHPOC.git
+   30  mv NKPonNTNXHPOC scripts
+   31  cd script
+   32  cd scripts
+   33  lt -lr
+   34  ls ltr
+   35  ls -ltr
+   36  cd ..
+   37  mv scripts script2
+   38  mkdir scripts
+   39  cd scripts
+   40  vi install-nkp-mgmt-cluster.bash
+   41  ls -ltr
+   42  chmod +x ./install-nkp-mgmt-cluster.bash 
+   43  vi nkp-config.conf
+   44  less install-nkp-mgmt-cluster.bash 
+   45  !
+   46  ls -ltr
+   47  mv nkp-config.conf nkp-mgmt.conf
+   48  ls -ltr
+   49  clear
+   50  ls -tlr
+   51  ./install-nkp-mgmt-cluster.bash -h
+   52  vi nkp-mgmt.conf 
+   53  ls -ltr
+   54  rm install-nkp-mgmt-cluster.bash
+   55  vi install-nkp-mgmt-cluster.bash
+   56  ./install-nkp-mgmt-cluster.bash -h
+   57  chmod +x ./install-nkp-mgmt-cluster.bash 
+   58  ./install-nkp-mgmt-cluster.bash -h
+   59  vi ./install-nkp-mgmt-cluster.bash
+   60  vi nkp-mgmt.conf 
+   61  vi ./install-nkp-mgmt-cluster.bash
+   62  vi nkp-mgmt.conf 
+   63  ./install-nkp-mgmt-cluster.bash -h
+   64  ./install-nkp-mgmt-cluster.bash --dry-run
+   65  cd scripts
+   66  ls -ltr
+   67  cd ..
+   68  ls -ltr
+   69  mv scripts tmp
+   70  mv script2 scripts
+   71  cd scripts
+   72  ls -ltr
+   73  cp ../tmp/* .
+   74  ls -ltr
+   75  rm README.md
+   76  ls -ltr
+   77  less nkp-mgmt.conf 
+   78  ./install-nkp-mgmt-cluster.bash -h
+   79  less ./install-nkp-mgmt-cluster.bash 
+   80  ./install-nkp-mgmt-cluster.bash --dry-run
+   81  clear
+   82  ./install-nkp-mgmt-cluster.bash --dry-run
+   83  ./install-nkp-mgmt-cluster.bash --help
+   84  ./install-nkp-mgmt-cluster.bash 
+   85  kubectl patch kommandercluster -n kommander host-cluster --type='merge' -p '{"spec":{"ingress":{"hostname":"10.55.49.162"}}}'
+   86  ls -ltr
+   87  mv practice1.conf ~/clusters
+   88  vi ~/.bashrc
+   89  source ~/.bashrc
+   90  kubectl patch kommandercluster -n kommander host-cluster --type='merge' -p '{"spec":{"ingress":{"hostname":"10.55.49.162"}}}'
+   91  ls -ltr
+   92  ls -ltr ~/clusters
+   93  cat ~/clusters
+   94  cd
+   95  ls -ltr
+   96  mv clusters practice1.conf
+   97  mkdir clusters
+   98  cd clusters
+   99  mv ../practice1.conf .
+  100  kubectl patch kommandercluster -n kommander host-cluster --type='merge' -p '{"spec":{"ingress":{"hostname":"10.55.49.162"}}}'
+  101  kubectl get ns
+  102  cd
+  103  cd scripts
+  104  ls -ltr
+  105  vi nkp-mgmt.conf
+  106  nkp delete practice1
+  107  vi nkp-mgmt.conf
+  108  nkp delete cluster practice1
+  109  nkp delete cluster 
+  110  nkp delete cluster  --help
+  111  nkp delete cluster  --cluster-name practice1
+  112  nkp delete cluster --self-managed  --cluster-name practice1
+  113  ls -ltr
+  114  ckear
+  115  ls-ltr
+  116  vi nkp-mgmt.conf
+  117  sync
+  118  vi nkp-mgmt.conf
+  119  ls -ltr
+  120  rm -rf helm no-vpc bastion-outside-vpc bastion-inside-vpc/
+  121  ls ltr
+  122  ls -ltr
+  123  git status
+  124  git config user.name "Steven Sim"
+  125  git config user.email "unixandme@gmail.com"
+  126  git add . 
+  127  git commit -m "Major changes. New create Management script and config files."
+  128  git push origin main
+  129  ls -ltr
+  130  syc
+  131  sync
+  132  cd ..
+  133  ls -ltr
+  134  ls ltr /tmp
+  135  ls ltr ~/tmp
+  136  ls -ltr
+  137  rm -rf tmp
+  138  ls -ltr
+  139   cd scripts
+  140   -ltr
+  141  ls -ltr
+  142  ./install-nkp-mgmt-cluster.bash --dry-run
+  143  sudo shutdown -h now
+  144  cd scripts
+  145  ls -ltr
+  146  less nkp-mgmt.conf 
+  147  ./install-nkp-mgmt-cluster.bash --dry-run
+  148  nkp get dashboard
+  149  nkp get dashboard
+  150  kubectl get pods -n kommander -l apps=cosi-driver-nutanix
+  151  kubectl get pods -n kommander 
+  152  kubectl get pods -n kommander|grep -i cosi
+  153  kubectl describe pods/cosi-driver-nutanix-5d8f6585c7-9hq78 -n kommander
+  154  kubectl get pods -n kommander|grep -i cosi
+  155  kubectl logs pods/cosi-driver-nutanix-5d8f6585c7-9hq78 -c cosi-driver-nutanix
+  156  kubectl logs pods/cosi-driver-nutanix-5d8f6585c7-9hq78 -c cosi-driver-nutanix -n kommander
+  157  kubectl get bucketclass -A
+  158  vi test-cosi.yaml
+  159  kubectl create -f test-cosi.yaml
+  160  sleep 10
+  161  kubectl get bucketclaim test-bucket-claim -n default
+  162  kubectl describe bucketclaim/test-bucket-claim -n default
+  163  kubectl logs pods/cosi-driver-nutanix-5d8f6585c7-9hq78 -c objectstorage-provisioner-sidecar -n kommander
+  164  kubectl logs pods/cosi-driver-nutanix-5d8f6585c7-9hq78 -c cosi-driver-nutanix -n kommander --since=15m
+  165  kubectl logs pods/cosi-driver-nutanix-5d8f6585c7-9hq78 -c cosi-driver-nutanix -n kommander --since=15m > logs-cosi-driver-nutanix-5d8f6585c7-9hq78
+  166  ls -ltr
+  167  cat  logs-cosi-driver-nutanix-5d8f6585c7-9hq78
+  168  kubectl get pods -n kommander -l app=cosi-driver-nutanix
+  169  kubectl get pods -n kommander |grep -i cosi
+  170  kubectl logs -n kommander pod/cosi-driver-nutanix-75d6cf95cc-x8sx4 -c cosi-driver-nutanix --since=5m
+  171  kubectl get bucketclaim test-bucket-claim -n default
+  172  kubectl describe bucketclaim/test-bucket-claim -n default
+  173  kubectl delete bucketclaim test-bucket-claim -n default
+  174  kubectl get services -n kommander|grep -i cloud
+  175  kubectl get services -n kommander
+  176  kubectl get services -n kommander|grep -i pg
+  177  kubectl get pods -n kommander|grep -i pg
+  178  kubectl get pods -n kommander
+  179  kubectl get pods -n ncr-system
+  180  kubectl get bucketclaims,bucketaccess -n ncr-system
+  181  kubectl get clustre -n ncr-system
+  182  kubectl get cluster -n ncr-system
+  183  kubectl logs -n ncr-system -l app=harbor,component=jobservice --previous
+  184  kubectl get postgresql -n ncr-system
+  185  kubectl get pods -n ncr-system -l app=harbor,component=jobservice
+  186  echo "Harbor URL: https://$(kubectl -n kommander get kommandercluster host-cluster -o jsonpath='{.status.ingress.address}'):5000"
+  187  echo -n "Admin Password: "
+  188  kubectl get secrets -n ncr-system harbor-admin-password -o jsonpath='{.data.HARBOR_ADMIN_PASSWORD}' | base64 -d; echo
+  189  ls -ltr
+  190  vi bundle_push.bash
+  191  #$(kubectl get secrets -n ncr-system harbor-admin-password -o jsonpath='{.data.HARBOR_ADMIN_PASSWORD}' | base64 -d)
+  192  kubectl get secrets -n ncr-system harbor-admin-password -o jsonpath='{.data.HARBOR_ADMIN_PASSWORD}' | base64 -d
+  193  vi bundle_push.bash
+  194  which bash
+  195  vi bundle_push.bash
+  196  chmod +x bundle_push.bash 
+  197  ls -ltr
+  198  cat test-cosi.yaml
+  199  cat bundle_push.bash 
+  200  ./bundle_push.bash 
+  201  ls -ltr /home/nutanix/nkp-v2.17.0/container-images/konvoy-image-bundle-v2.17.0.tar 
+  202  vi ./bundle_push.bash 
+  203  cat bundle_push.bash 
+  204  history > cli-history-capture.txt
