@@ -1,0 +1,9 @@
+apiVersion: objectstorage.k8s.io/v1alpha1
+kind: BucketClaim
+metadata:
+  name: test-bucket-claim
+  namespace: default
+spec:
+  bucketClassName: cosi-nutanix-nkp
+  protocols:
+    - s3
