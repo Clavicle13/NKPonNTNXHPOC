@@ -1,0 +1,11 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: NutanixCluster
+metadata:
+  name: nutanix-pc-connection
+  namespace: ntnx-system
+spec:
+  endpoint:
+    address: 10.38.244.7
+    port: 9440
+  secretRef:
+    name: ntnx-pc-secret

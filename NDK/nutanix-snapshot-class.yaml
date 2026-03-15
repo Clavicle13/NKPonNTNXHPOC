@@ -1,0 +1,9 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: AppSnapshotClass
+metadata:
+  name: nutanix-snapshot-class
+spec:
+  # This links the class to the handshake we just finished
+  storageClusterName: nutanix-storage-cluster
+  # This tells NDK to delete the physical snapshot if the K8s object is deleted
+  deletionPolicy: Delete

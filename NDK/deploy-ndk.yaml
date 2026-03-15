@@ -1,0 +1,9 @@
+apiVersion: apps.kommander.d2iq.io/v1alpha3
+kind: AppDeployment
+metadata:
+  name: ntnx-ndk
+  namespace: kommander-default-workspace 
+spec:
+  appRef:
+    name: ntnx-ndk-1.1.0 
+    kind: ClusterApp

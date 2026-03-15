@@ -1,0 +1,12 @@
+# ndk-cluster.yaml
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: NutanixCluster
+metadata:
+  name: nutanix-pc
+  namespace: demo-ndk
+spec:
+  endpoint:
+    address: 10.38.244.7
+    port: 9440
+  secretRef:
+    name: ndk-pc-secret
