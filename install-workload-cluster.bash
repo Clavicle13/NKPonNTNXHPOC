@@ -13,7 +13,7 @@ usage() {
     echo "  --dry-run      Execute a dry run to generate Kubernetes manifests (YAML)."
     echo ""
     echo "Description:"
-    echo "  This script installs an NKP Management cluster based on settings in"
+    echo "  This script installs an NKP Workload cluster based on settings in"
     echo "  the configuration file (nkp-mgmt.conf). It handles both VPC and"
     echo "  standard installations automatically."
     echo ""
@@ -26,7 +26,7 @@ if [[ "$1" == "--help" || "$1" == "-h" ]]; then
 fi
 
 # 1. Source the Configuration
-CONFIG_FILE="${HOME}/scripts/nkp-mgmt-vpc.conf"
+CONFIG_FILE="${HOME}/scripts/nkp-workload-vpc.conf"
 if [[ ! -f "${CONFIG_FILE}" ]]; then
     echo "Error: Configuration file ${CONFIG_FILE} not found."
     exit 1
@@ -64,12 +64,12 @@ fi
 
 # 4. Construct the Command Dynamically [cite: 1, 143]
 CMD="${NKP_DIRECTORY}/cli/nkp create cluster nutanix \\
-    --cluster-name=${NKPCLUSTER_NAME} \\
+    --cluster-name=${NKP_WORKLOAD_CLUSTER_NAME} \\
     --airgapped \\
-    --self-managed \\
     --insecure \\
     --endpoint=https://${PRISMCENTRAL_ENDPOINT}:9440 \\
     --bundle=${NKP_BUNDLES} \\
+    --namespace ${WORKSPACE_NAMESPACE} \\
     --control-plane-replicas=3 \\
     --control-plane-endpoint-ip=${NKPAPISERVER_VIP} \\
     --control-plane-vm-image=${VM_IMAGE_NAME} \\
@@ -93,7 +93,7 @@ CMD="${NKP_DIRECTORY}/cli/nkp create cluster nutanix \\
 if [[ "${INSIDE_VPC}" == "TRUE" ]]; then
     echo "Configuration Mode: [INSIDE VPC]"
     CMD="${CMD} \\
-    --extra-sans=${FloatingIP_APIServer} \\
+    --extra-sans="${FloatingIP_APIServer},${FloatingIP_LBFirstIP}" \\
     --cluster-hostname=${FloatingIP_LBFirstIP}"
 else
     echo "Configuration Mode: [OUTSIDE VPC / STANDARD]"
