@@ -1,0 +1,12 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: management-gitops-demo
+  namespace: kommander-default-workspace
+spec:
+  interval: 1m
+  path: "./management-infra" # <--- This tells Flux to look inside your new folder
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: gitea-repo

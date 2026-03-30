@@ -1,0 +1,13 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: gitea-repo
+  namespace: kommander-default-workspace
+spec:
+  interval: 1m
+  # Using internal VPC DNS
+  url: http://gitea.gitea.svc.cluster.local:3000/nkpadmin/nkp-gitops.git
+  ref:
+    branch: main
+  secretRef:
+    name: gitea-credentials

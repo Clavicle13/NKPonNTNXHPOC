@@ -1,0 +1,3 @@
+k8sAPIServer: "https://10.10.2.37:6443"
+podNetwork: "192.168.0.0/16"
+serviceNetwork: "10.96.0.0/12"

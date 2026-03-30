@@ -1,0 +1,31 @@
+tls:
+  server:
+    clusterName: "practice1"
+manager:
+  image:
+    repository: "10.54.62.249:5000/partnerdemo/ndk-manager"
+    tag: "2.1.0"
+infraManager:
+  image:
+    repository: "10.54.62.249:5000/partnerdemo/ndk-infra-manager"
+    tag: "2.1.0"
+jobScheduler:
+  image:
+    repository: "10.54.62.249:5000/partnerdemo/ndk-job-scheduler"
+    tag: "2.1.0"
+kubeRbacProxy:
+  image:
+    repository: "10.54.62.249:5000/partnerdemo/kube-rbac-proxy"
+    tag: "v0.20.1"
+config:
+  secret:
+    dir: "/etc/nutanix/config"
+deployment:
+  infraManager:
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi

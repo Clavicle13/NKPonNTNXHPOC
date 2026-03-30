@@ -1,0 +1,8 @@
+apiVersion: apps.kommander.d2iq.io/v1alpha3
+kind: ClusterCatalog
+metadata:
+  name: nutanix-catalog
+spec:
+  repository:
+    url: https://nutanix.github.io/helm-charts
+    type: Helm
