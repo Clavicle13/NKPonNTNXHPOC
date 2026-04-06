@@ -1,75 +1,108 @@
+
 #!/usr/bin/bash
 ######################################################################################
 # Revamped NKP Management Cluster Installation Script
-# Supports: Inside VPC (Internal Bastion) and Outside VPC (External Bastion)
+# Supports: Custom Config Files, Dry-runs, and VPC/Standard modes
+# Updated for: Non-Air-Gapped Installation
 ######################################################################################
+
+# --- Default Values ---
+CONFIG_FILE=""
+DRY_RUN=false
 
 # --- Help Function ---
 usage() {
     echo "Usage: $0 [options]"
     echo ""
     echo "Options:"
-    echo "  -h, --help     Show this help message and exit."
-    echo "  --dry-run      Execute a dry run to generate Kubernetes manifests (YAML)."
+    echo "  -f, --file FILE   Path to the configuration file (Required)."
+    echo "  -h, --help        Show this help message and exit."
+    echo "  --dry-run         Execute a dry run to generate Kubernetes manifests (YAML)."
     echo ""
-    echo "Description:"
-    echo "  This script installs an NKP Management cluster based on settings in"
-    echo "  the configuration file (nkp-mgmt.conf). It handles both VPC and"
-    echo "  standard installations automatically."
+    echo "Example:"
+    echo "  $0 -f my-nkp-config.conf --dry-run"
     echo ""
     exit 0
 }
 
-# Check for help parameter manually (as --help isn't natively handled by getopts)
-if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+# --- Manual Argument Parsing ---
+# We use a loop to handle both short (-f) and long (--file) flags
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -f|--file)
+            CONFIG_FILE="$2"
+            shift 2
+            ;;
+        --dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            echo "Unknown option: $1"
+            usage
+            ;;
+    esac
+done
+
+# 1. Validation: Ensure Config File is provided and exists
+if [[ -z "${CONFIG_FILE}" ]]; then
+    echo "ERROR: No configuration file specified. Use -f <filename>."
     usage
 fi
 
-# 1. Source the Configuration
-CONFIG_FILE="${HOME}/scripts/nkp-mgmt-vpc.conf"
 if [[ ! -f "${CONFIG_FILE}" ]]; then
-    echo "Error: Configuration file ${CONFIG_FILE} not found."
+    echo "ERROR: Configuration file '${CONFIG_FILE}' not found."
     exit 1
 fi
+
+# 2. Source and Validate Configuration Content
 source "${CONFIG_FILE}"
 
-# 2. Pre-flight Validation Checks
+# Check if the critical variable PRISMCENTRAL_ENDPOINT is defined and not empty
+if [[ -z "${PRISMCENTRAL_ENDPOINT}" ]]; then
+    echo "ERROR: PRISMCENTRAL_ENDPOINT is not defined or is empty in ${CONFIG_FILE}."
+    echo "Please ensure the configuration file is correct."
+    exit 1
+fi
+
+echo "✓ Configuration file loaded: ${CONFIG_FILE}"
+
+# 3. Pre-flight Validation Checks
 echo "--- Running Pre-flight Validations ---"
 
-# Check SSH Public Key existence [cite: 5, 51]
+# Check SSH Public Key existence
 SSH_KEY_PATH="${HOME}/.ssh/id_rsa.pub"
 if [[ ! -f "${SSH_KEY_PATH}" ]]; then
     echo "ERROR: SSH Public Key not found at ${SSH_KEY_PATH}."
-    echo "This key is required to configure nodes for troubleshooting. [cite: 5]"
     exit 2
 fi
 echo "✓ SSH Public Key found."
 
-# Verify Prism Central Connectivity [cite: 5]
+# Verify Prism Central Connectivity
 echo "Verifying connectivity to Prism Central (${PRISMCENTRAL_ENDPOINT}:9440)..."
 if ! curl -sk --connect-timeout 5 "https://${PRISMCENTRAL_ENDPOINT}:9440" > /dev/null; then
     echo "ERROR: Unable to reach Prism Central at ${PRISMCENTRAL_ENDPOINT}:9440."
-    echo "Please check your network path, VPC security groups, or routing. [cite: 5]"
     exit 3
 fi
 echo "✓ Prism Central connectivity verified."
 
-# 3. Determine Run Mode 
+# 4. Determine Run Mode
 MODE_FLAG=""
 RUN_TYPE="ACTUAL INSTALLATION"
-if [[ "$1" == "--dry-run" ]]; then
-    MODE_FLAG="--dry-run --output=yaml" # Generate cluster manifests [cite: 116]
+if [ "$DRY_RUN" = true ]; then
+    MODE_FLAG="--dry-run --output=yaml"
     RUN_TYPE="DRY RUN (Generating YAML)"
 fi
 
-# 4. Construct the Command Dynamically [cite: 1, 143]
-CMD="${NKP_DIRECTORY}/cli/nkp create cluster nutanix \\
+# 5. Construct the Command Dynamically
+CMD="${NKP_DIRECTORY}/nkp create cluster nutanix \\
     --cluster-name=${NKPCLUSTER_NAME} \\
-    --airgapped \\
     --self-managed \\
     --insecure \\
     --endpoint=https://${PRISMCENTRAL_ENDPOINT}:9440 \\
-    --bundle=${NKP_BUNDLES} \\
     --control-plane-replicas=3 \\
     --control-plane-endpoint-ip=${NKPAPISERVER_VIP} \\
     --control-plane-vm-image=${VM_IMAGE_NAME} \\
@@ -89,7 +122,7 @@ CMD="${NKP_DIRECTORY}/cli/nkp create cluster nutanix \\
     --ssh-public-key-file=${SSH_KEY_PATH} \\
     --verbose=5"
 
-# Add VPC-specific flags [cite: 122, 132]
+# Add VPC-specific flags
 if [[ "${INSIDE_VPC}" == "TRUE" ]]; then
     echo "Configuration Mode: [INSIDE VPC]"
     CMD="${CMD} \\
@@ -99,14 +132,16 @@ else
     echo "Configuration Mode: [OUTSIDE VPC / STANDARD]"
 fi
 
-# Finalize command with dry-run/output flags if specified [cite: 116, 151]
-CMD="${CMD} ${MODE_FLAG}"
+# Finalize command
+CMD="${CMD} \\
+    ${MODE_FLAG}"
 
-# 5. Display Command and Request Approval
+# 6. Display Command and Request Approval
 echo -e "\n-----------------------------------------------------------------------"
 echo "PROPOSED ${RUN_TYPE} COMMAND:"
 echo "-----------------------------------------------------------------------"
-echo -e "${CMD}" | sed 's/--/\n    --/g' 
+# Pretty print for the user
+echo -e "${CMD}" | sed 's/--/\n    --/g'
 echo "-----------------------------------------------------------------------"
 echo -n "Do you approve and wish to execute this command? (y/n): "
 read user_approval
@@ -116,6 +151,7 @@ if [[ "${user_approval}" != "y" ]]; then
     exit 0
 fi
 
-# 6. Execution Primary Section
+# 7. Execution
 echo "Executing NKP Creation..."
 eval "${CMD}"
+
