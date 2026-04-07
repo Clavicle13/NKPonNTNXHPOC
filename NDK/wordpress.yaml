@@ -1,0 +1,246 @@
+# ---------------------------
+# Namespace
+# ---------------------------
+apiVersion: v1
+kind: Namespace
+metadata:
+ name: wordpress-demo
+---
+# ---------------------------
+# DB Secret
+# ---------------------------
+apiVersion: v1
+kind: Secret
+metadata:
+ name: mysql-secret
+ namespace: wordpress-demo
+type: Opaque
+stringData:
+ mysql-root-password: rootpass
+ mysql-user: wpuser
+ mysql-password: wppass
+ mysql-database: wordpress
+---
+# ---------------------------
+# MySQL PVC
+# ---------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: mysql-pvc
+ namespace: wordpress-demo
+spec:
+ accessModes:
+   - ReadWriteOnce
+ storageClassName: nutanix-volume
+ resources:
+   requests:
+     storage: 10Gi
+---
+# ---------------------------
+# WordPress PVC
+# ---------------------------
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: wp-pvc
+ namespace: wordpress-demo
+spec:
+ accessModes:
+   - ReadWriteOnce
+ storageClassName: nutanix-volume
+ resources:
+   requests:
+     storage: 10Gi
+---
+# ---------------------------
+# MySQL Deployment
+# ---------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: mysql
+ namespace: wordpress-demo
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: mysql
+ template:
+   metadata:
+     labels:
+       app: mysql
+   spec:
+     containers:
+     - name: mysql
+       image: mysql:8.0
+       ports:
+       - containerPort: 3306
+       env:
+       - name: MYSQL_ROOT_PASSWORD
+         valueFrom:
+           secretKeyRef:
+             name: mysql-secret
+             key: mysql-root-password
+       - name: MYSQL_DATABASE
+         valueFrom:
+           secretKeyRef:
+             name: mysql-secret
+             key: mysql-database
+       - name: MYSQL_USER
+         valueFrom:
+           secretKeyRef:
+             name: mysql-secret
+             key: mysql-user
+       - name: MYSQL_PASSWORD
+         valueFrom:
+           secretKeyRef:
+             name: mysql-secret
+             key: mysql-password
+       volumeMounts:
+       - name: mysql-data
+         mountPath: /var/lib/mysql
+     volumes:
+     - name: mysql-data
+       persistentVolumeClaim:
+         claimName: mysql-pvc
+---
+# ---------------------------
+# MySQL Service
+# ---------------------------
+apiVersion: v1
+kind: Service
+metadata:
+ name: mysql
+ namespace: wordpress-demo
+spec:
+ selector:
+   app: mysql
+ ports:
+ - port: 3306
+---
+# ---------------------------
+# WordPress Deployment
+# ---------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: wordpress
+ namespace: wordpress-demo
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: wordpress
+ template:
+   metadata:
+     labels:
+       app: wordpress
+   spec:
+     containers:
+     - name: wordpress
+       image: wordpress:6.9.1-apache
+       ports:
+       - containerPort: 80
+       env:
+       - name: WORDPRESS_DB_HOST
+         value: mysql
+       - name: WORDPRESS_DB_NAME
+         valueFrom:
+           secretKeyRef:
+             name: mysql-secret
+             key: mysql-database
+       - name: WORDPRESS_DB_USER
+         valueFrom:
+           secretKeyRef:
+             name: mysql-secret
+             key: mysql-user
+       - name: WORDPRESS_DB_PASSWORD
+         valueFrom:
+           secretKeyRef:
+             name: mysql-secret
+             key: mysql-password
+       volumeMounts:
+       - name: wp-data
+         mountPath: /var/www/html
+     volumes:
+     - name: wp-data
+       persistentVolumeClaim:
+         claimName: wp-pvc
+---
+# ---------------------------
+# WordPress Service
+# ---------------------------
+apiVersion: v1
+kind: Service
+metadata:
+ name: wordpress
+ namespace: wordpress-demo
+spec:
+ selector:
+   app: wordpress
+ ports:
+ - port: 80
+---
+# ---------------------------
+# TLS Certificate (cert-manager)
+# ---------------------------
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+ name: wordpress-tls
+ namespace: wordpress-demo
+spec:
+ secretName: wordpress-tls
+ issuerRef:
+   kind: ClusterIssuer
+   name: selfsigned-issuer
+ dnsNames:
+ - wordpress.ntnxlab.local
+---
+# ---------------------------
+# Gateway (Updated)
+# ---------------------------
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+ name: wordpress-gateway
+ namespace: wordpress-demo
+spec:
+ gatewayClassName: traefik
+ listeners:
+ - name: websecure
+   port: 8443
+   protocol: HTTPS
+   tls:
+     mode: Terminate
+     certificateRefs:
+     - kind: Secret
+       name: wordpress-tls
+   allowedRoutes:
+     namespaces:
+       from: Same
+---
+---
+# ---------------------------
+# HTTPRoute (Updated)
+# ---------------------------
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+ name: wordpress-route
+ namespace: wordpress-demo
+spec:
+ parentRefs:
+ - name: wordpress-gateway
+   namespace: wordpress-demo
+   sectionName: websecure
+ hostnames:
+ - wordpress.ntnxlab.local
+ rules:
+ - backendRefs:
+   - name: wordpress
+     kind: Service
+     port: 80
+
+

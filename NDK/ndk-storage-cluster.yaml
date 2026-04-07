@@ -1,0 +1,8 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: StorageCluster
+metadata:
+  name: ntnx-storage-cluster
+  namespace: ntnx-system
+spec:
+  managementServerUuid: "423ee751-6c6e-47d9-9acf-347fa38db1eb"
+  storageServerUuid: "00064ebf-0c60-fc6e-0000-000000019593"

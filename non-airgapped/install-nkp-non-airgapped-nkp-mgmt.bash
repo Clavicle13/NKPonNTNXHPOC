@@ -126,7 +126,7 @@ CMD="${NKP_DIRECTORY}/nkp create cluster nutanix \\
 if [[ "${INSIDE_VPC}" == "TRUE" ]]; then
     echo "Configuration Mode: [INSIDE VPC]"
     CMD="${CMD} \\
-    --extra-sans=${FloatingIP_APIServer} \\
+    --extra-sans="${FloatingIP_APIServer},${NKPAPISERVER_VIP},${FloatingIP_LBFirstIP}" \\
     --cluster-hostname=${FloatingIP_LBFirstIP}"
 else
     echo "Configuration Mode: [OUTSIDE VPC / STANDARD]"
