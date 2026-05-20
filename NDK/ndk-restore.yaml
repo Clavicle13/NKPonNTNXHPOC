@@ -1,0 +1,7 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: ApplicationSnapshotRestore
+metadata:
+  name: mysql-restore-1
+  namespace: partner-demo
+spec:
+  applicationSnapshotName: mysql-snapshot-1

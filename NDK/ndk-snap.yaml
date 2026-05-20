@@ -1,0 +1,10 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: ApplicationSnapshot
+metadata:
+  name: mysql-snapshot-1
+  namespace: partner-demo
+spec:
+  expiresAfter: 1h
+  source:
+    applicationRef:
+      name: mysql-partner-app

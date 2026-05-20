@@ -1,0 +1,9 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: ReplicationTarget
+metadata:
+  name: dr-cluster-target
+  namespace: partner-demo
+spec:
+  remoteName: dr-cluster-remote
+  namespaceName: partner-demo
+

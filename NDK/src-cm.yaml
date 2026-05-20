@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ndk-manager-config
+  namespace: ntnx-system
+data:
+  controller_manager_config.yaml: |
+    apiVersion: config.dataservices.nutanix.com/v1alpha1
+    kind: DataServicesConfig
+    health:
+      healthProbeBindAddress: ":8081"
+    leaderElection:
+      leaderElect: true
+      resourceName: "d30ae773.nutanix.com"
+    metrics:
+      bindAddress: "127.0.0.1:8080"
+    webhook:
+      port: 9443
+      host: ""
+      certDir: ""
+    ndkServerConfig:
+      port: 2021
+      enableServerReflection: true
+      enableTLS: false
+      enableMTLS: false
+      clusterName: "salary2"
+      secretName: ndk-server-cert
+      certMountLocation: /etc/certs

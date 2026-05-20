@@ -1,0 +1,8 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: ApplicationSnapshotReplication
+metadata:
+  name: mysql-repl-1
+  namespace: partner-demo
+spec:
+  applicationSnapshotName: mysql-snapshot-1
+  replicationTargetName: dr-cluster-target

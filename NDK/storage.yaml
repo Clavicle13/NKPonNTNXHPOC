@@ -1,0 +1,7 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: StorageCluster
+metadata:
+  name: my-storage-cluster
+spec:
+  managementServerUuid: "816112d2-99a3-4ff0-a628-53310893df42"
+  storageServerUuid: "000651f9-96d7-f851-782a-ac1f6b3b3b4f"
