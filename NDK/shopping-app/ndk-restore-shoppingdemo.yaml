@@ -1,0 +1,8 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: ApplicationSnapshotRestore
+metadata:
+  name: shopping-app-restore-1
+  namespace: shopping-demo
+spec:
+  applicationSnapshotName: shopping-app-snap-1
+

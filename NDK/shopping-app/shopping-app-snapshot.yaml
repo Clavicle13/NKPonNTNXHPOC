@@ -4,7 +4,7 @@ metadata:
   name: shopping-app-snap-1
   namespace: shopping-demo
 spec:
-  expiresAfter: 1h
+  expiresAfter: 24h
   source:
     applicationRef:
       name: shopping-app
