@@ -1,0 +1,10 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: StorageCluster
+metadata:
+  name: nutanix-storage-cluster
+  namespace: ntnx-system
+spec:
+  # This is the "Brain" (Prism Central)
+  managementServerUuid: "20af0a40-e46c-4758-9954-13504dc2c78c"
+  # This is the "Muscle" (Prism Element / AOS)
+  storageServerUuid: "00065314-d269-a4a2-0000-00000002acb9"

@@ -1,0 +1,9 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: Remote
+metadata:
+  name: dr-cluster-remote
+  namespace: shopping-demo
+spec:
+  clusterName: "vibecoding"
+  ndkServiceIp: "3.3.3.21"
+  ndkServicePort: 2021

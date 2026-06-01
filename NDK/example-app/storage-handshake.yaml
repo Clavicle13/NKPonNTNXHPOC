@@ -5,6 +5,6 @@ metadata:
   namespace: ntnx-system
 spec:
   # This is the "Brain" (Prism Central)
-  managementServerUuid: "3b034893-ef61-4d00-8aad-172827badf45"
+  managementServerUuid: "20af0a40-e46c-4758-9954-13504dc2c78c"
   # This is the "Muscle" (Prism Element / AOS)
-  storageServerUuid: "00064ce3-d087-e7ca-3863-9440c9756dc0"
+  storageServerUuid: "00065314-d269-a4a2-0000-00000002acb9"

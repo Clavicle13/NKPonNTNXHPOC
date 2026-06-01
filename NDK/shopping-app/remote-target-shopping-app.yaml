@@ -1,0 +1,10 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: ReplicationTarget
+metadata:
+  name: dr-cluster-target
+  namespace: shopping-demo
+spec:
+  namespaceName: shopping-demo
+  remoteName: dr-cluster-remote
+  serviceAccountName: default
+

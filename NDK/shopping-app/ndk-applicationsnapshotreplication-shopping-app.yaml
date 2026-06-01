@@ -1,0 +1,8 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: ApplicationSnapshotReplication
+metadata:
+  name: shopping-app-repl-1
+  namespace: shopping-demo
+spec:
+  applicationSnapshotName: shopping-app-snap-1
+  replicationTargetName: dr-cluster-target

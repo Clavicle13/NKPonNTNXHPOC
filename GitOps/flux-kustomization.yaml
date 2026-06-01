@@ -1,7 +1,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: salary-cluster-scaling
+  name: gitea-kustomization
   namespace: kommander-default-workspace
 spec:
   interval: 1m
@@ -10,4 +10,3 @@ spec:
   sourceRef:
     kind: GitRepository
     name: gitea-repo
-  targetNamespace: finance-m2cmc-8bngv # This is the "Safety Net"

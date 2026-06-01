@@ -1,0 +1,19 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: Application
+metadata:
+  name: shopping-app
+  namespace: shopping-demo
+spec:
+  applicationSelector:
+    resourceLabelSelectors:
+    - includeResources:
+      - group: "apps"
+        kind: Deployment
+      - group: ""
+        kind: PersistentVolumeClaim
+      - group: ""
+        kind: Secret
+      - group: ""
+        kind: ConfigMap
+      - group: ""
+        kind: Service

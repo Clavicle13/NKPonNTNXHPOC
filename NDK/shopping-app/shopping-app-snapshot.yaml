@@ -1,0 +1,10 @@
+apiVersion: dataservices.nutanix.com/v1alpha1
+kind: ApplicationSnapshot
+metadata:
+  name: shopping-app-snap-1
+  namespace: shopping-demo
+spec:
+  expiresAfter: 1h
+  source:
+    applicationRef:
+      name: shopping-app
