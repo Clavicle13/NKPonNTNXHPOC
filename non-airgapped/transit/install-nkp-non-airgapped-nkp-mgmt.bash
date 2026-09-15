@@ -97,6 +97,16 @@ if [ "$DRY_RUN" = true ]; then
     RUN_TYPE="DRY RUN (Generating YAML)"
 fi
 
+# Echo the variables to ensure everything 
+# is proper
+echo
+echo "NKP_AIRGAPPED_DIR is ${NKP_NONAIRGAPPED_DIR}"
+echo "NKP_VERSION is ${NKP_VERSION}"
+echo "NKP_DIRECTORY is ${NKP_DIRECTORY}"
+echo "NKP_BUNDLES is ${NKP_BUNDLES}"
+echo "CSI_STORAGE_CONTAINER is ${CSI_STORAGE_CONTAINER}"
+echo
+
 # 5. Construct the Command Dynamically
 CMD="nkp create cluster nutanix \\
     --cluster-name=${NKPCLUSTER_NAME} \\
