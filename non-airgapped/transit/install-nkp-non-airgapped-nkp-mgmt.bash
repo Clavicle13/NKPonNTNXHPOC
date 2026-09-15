@@ -74,7 +74,7 @@ echo "✓ Configuration file loaded: ${CONFIG_FILE}"
 echo "--- Running Pre-flight Validations ---"
 
 # Check SSH Public Key existence
-SSH_KEY_PATH="${HOME}/.ssh/id_rsa.pub"
+#SSH_KEY_PATH="${HOME}/.ssh/id_ed25519.pub'
 if [[ ! -f "${SSH_KEY_PATH}" ]]; then
     echo "ERROR: SSH Public Key not found at ${SSH_KEY_PATH}."
     exit 2
@@ -98,7 +98,7 @@ if [ "$DRY_RUN" = true ]; then
 fi
 
 # 5. Construct the Command Dynamically
-CMD="${NKP_NONAIRGAPPED_DIR}/nkp create cluster nutanix \\
+CMD="nkp create cluster nutanix \\
     --cluster-name=${NKPCLUSTER_NAME} \\
     --self-managed \\
     --insecure \\
@@ -141,7 +141,8 @@ echo -e "\n---------------------------------------------------------------------
 echo "PROPOSED ${RUN_TYPE} COMMAND:"
 echo "-----------------------------------------------------------------------"
 # Pretty print for the user
-echo -e "${CMD}" | sed 's/--/\n    --/g'
+#echo -e "${CMD}" | sed 's/--/\n    --/g'
+echo -e "${CMD}" 
 echo "-----------------------------------------------------------------------"
 echo -n "Do you approve and wish to execute this command? (y/n): "
 read user_approval
