@@ -112,20 +112,25 @@ CMD="nkp create cluster nutanix \\
     --cluster-name=${NKPCLUSTER_NAME} \\
     --self-managed \\
     --insecure \\
+    --airgapped \\
+    --bundle="$HOME/nkp-v2.19.0/container-images/konvoy-image-bundle-v2.19.0.tar" \\
+    --bundle="$HOME/nkp-v2.19.0/container-images/kommander-image-bundle-v2.19.0.tar" \\
+    --bundle="$HOME/nkp-v2.19.0/container-images/nkp-nutanix-product-catalog-image-bundle-2.19.tar" \\
+    --bundle="$HOME/nkp-v2.19.0/container-images/nkp-ai-applications-catalog-image-bundle-2.19.tar" \\
+    --bundle="$HOME/nkp-v2.19.0/container-images/nkp-release-specs-v2.19.0.tar" \\
     --endpoint=https://${PRISMCENTRAL_ENDPOINT}:9440 \\
     --control-plane-replicas=3 \\
     --control-plane-endpoint-ip=${NKPAPISERVER_VIP} \\
     --control-plane-vm-image=${VM_IMAGE_NAME} \\
     --control-plane-prism-element-cluster=${HPOC_CLUSTER} \\
     --control-plane-subnets=${VPC_CONTROLPLANE_SUBNET} \\
-    --control-plane-pc-project=${PC_PROJECT} \\
     --control-plane-pc-categories=${CONTROLPLANE_PC_CATEGORIES} \\
     --worker-replicas=4 \\
     --worker-vm-image=${VM_IMAGE_NAME} \\
     --worker-prism-element-cluster=${HPOC_CLUSTER} \\
     --worker-subnets=${VPC_WORKER_SUBNET} \\
-    --worker-pc-project=${PC_PROJECT} \\
     --worker-pc-categories=${WORKERNODE_PC_CATEGORIES} \\
+    --pc-project=${PC_PROJECT} \\
     --csi-storage-container=${CSI_STORAGE_CONTAINER} \\
     --kubernetes-service-load-balancer-ip-range=${LOAD_BALANCER_IP_RANGE} \\
     --ssh-username=konvoy \\
