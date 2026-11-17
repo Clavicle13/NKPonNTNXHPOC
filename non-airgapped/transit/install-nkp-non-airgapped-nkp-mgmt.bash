@@ -113,11 +113,11 @@ CMD="nkp create cluster nutanix \\
     --self-managed \\
     --insecure \\
     --airgapped \\
-    --bundle="$HOME/nkp-v2.19.0/container-images/konvoy-image-bundle-v2.19.0.tar" \\
-    --bundle="$HOME/nkp-v2.19.0/container-images/kommander-image-bundle-v2.19.0.tar" \\
-    --bundle="$HOME/nkp-v2.19.0/container-images/nkp-nutanix-product-catalog-image-bundle-2.19.tar" \\
-    --bundle="$HOME/nkp-v2.19.0/container-images/nkp-ai-applications-catalog-image-bundle-2.19.tar" \\
-    --bundle="$HOME/nkp-v2.19.0/container-images/nkp-release-specs-v2.19.0.tar" \\
+    --bundle="$HOME/nkp-${NKP_VERSION}/container-images/konvoy-image-bundle-${NKP_VERSION}.tar" \\
+    --bundle="$HOME/nkp-${NKP_VERSION}/container-images/kommander-image-bundle-${NKP_VERSION}.tar" \\
+    --bundle="$HOME/nkp-${NKP_VERSION}/container-images/nkp-nutanix-product-catalog-image-bundle-2.19.tar" \\
+    --bundle="$HOME/nkp-${NKP_VERSION}/container-images/nkp-ai-applications-catalog-image-bundle-2.19.tar" \\
+    --bundle="$HOME/nkp-${NKP_VERSION}/container-images/nkp-release-specs-${NKP_VERSION}.tar" \\
     --endpoint=https://${PRISMCENTRAL_ENDPOINT}:9440 \\
     --control-plane-replicas=3 \\
     --control-plane-endpoint-ip=${NKPAPISERVER_VIP} \\

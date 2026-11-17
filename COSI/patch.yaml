@@ -1,0 +1,5 @@
+kubectl patch bucketclaim cosi-harbor-bucket -n ncr-system \
+      --subresource=status \
+      --type=merge \
+      --patch-file bucketclaim-status-patch.yaml
+

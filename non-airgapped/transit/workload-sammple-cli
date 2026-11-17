@@ -1,0 +1,28 @@
+kubectl get secret kommander-ca -n cert-manager -o jsonpath='{.data.ca\.crt}' | base64 -d > /tmp/harbor-ca.crt
+
+NUTANIX_USER=admin \
+NUTANIX_PASSWORD='nx2Tech548!' \
+nkp create cluster nutanix \
+      --cluster-name databases \
+      --namespace engineering-scr9h-24454 \
+      --endpoint https://10.136.231.7:9440 \
+      --insecure \
+      --airgapped \
+      --control-plane-endpoint-ip 172.16.13.17 \
+      --control-plane-prism-element-cluster BLR-POC231 \
+      --worker-prism-element-cluster BLR-POC231 \
+      --control-plane-subnets instructor_spoke3_subnet1 \
+      --worker-subnets instructor_spoke3_subnet1 \
+      --vm-image nkp-ubuntu-24.04-release-cis-1.36.2-20261026153223 \
+      --csi-storage-container instructor \
+      --pc-project instructor \
+      --kubernetes-service-load-balancer-ip-range 172.16.13.130-172.16.13.140 \
+      --ssh-public-key-file ~/.ssh/id_ed25519.pub \
+      --registry-mirror-url "https://172.16.11.120:5000/nkpdemo" \
+      --registry-mirror-cacert /tmp/harbor-ca.crt \
+      --registry-mirror-username admin \
+      --registry-mirror-password 'aYm1TRfE8!HjJfj63K7%' \
+      --worker-pc-categories=Environment=Dev,nodetype=worker,clustertype=workload \
+      --control-plane-pc-categories=Environment=Dev,nodetype=controlplane,clustertype=workload 
+#      --dry-run
+
