@@ -1,5 +1,25 @@
+#!/bin/bash
+##################################################################################################################
+#
+# Script to add workload cluster
+#
+##################################################################################################################
+
+##################################################################################################################
+#
+# Extracts Harbor's CA (kommander-ca) from the management cluster before creating the workload cluster:
+#
+##################################################################################################################
 kubectl get secret kommander-ca -n cert-manager -o jsonpath='{.data.ca\.crt}' | base64 -d > /tmp/harbor-ca.crt
 
+##################################################################################################################
+#
+# Actual workload cluster creation command
+#
+# Please change workload cluster name, subnets, namespace, cluster name, registry, ssh-public-keys
+# load balancer range
+#
+##################################################################################################################
 NUTANIX_USER=admin \
 NUTANIX_PASSWORD='nx2Tech548!' \
 nkp create cluster nutanix \

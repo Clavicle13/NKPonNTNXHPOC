@@ -1,0 +1,31 @@
+#!/bin/bash
+################################################################################
+#
+# to patch harbor 2.19 because harbor rollout hangs upon first deploy
+#
+# Harbor's initialization was blocked because the harbor-cosi-storage-readiness
+# init container (wait-for-cosi-secret) was waiting for the cosi-harbor-bucket-credentials
+# secret in the ncr-system namespace.
+
+# ### Root Cause
+#
+# • The Bucket (bucket-fd8550d4-7088-4641-8f4a-63b9cfe29d27) was created and marked bucketReady: true,
+#   but cosi-controller-manager had a transient resource name may not be empty error on initial creation
+#   and left the BucketClaim (cosi-harbor-bucket in ncr-system) with status.bucketReady: false.
+# • Because the BucketClaim was not marked ready, cosi-driver-nutanix refused to grant
+#   BucketAccess (cosi-harbor-bucket), preventing the cosi-harbor-bucket-credentials
+#   secret from being created.
+#
+# ### Resolution
+#
+# 1. Patched bucketclaim.objectstorage.k8s.io/cosi-harbor-bucket in ncr-system to set status.bucketReady: true.
+# 2. Verified that cosi-driver-nutanix created the cosi-harbor-bucket-credentials secret in ncr-system and harbor-cosi-storage-readiness-56w6s completed.
+# 3. Verified that the harbor-cosi-storage HelmRelease in kommander transitioned to True (Helm install succeeded) and all pods in ncr-system (harbor-database-cluster-*
+# and harbor-valkey-node-*) are Running.
+#
+################################################################################
+kubectl patch bucketclaim cosi-harbor-bucket -n ncr-system \
+    --subresource=status \
+    --type=merge \
+    --patch-file bucketclaim-status-patch.yaml
+
