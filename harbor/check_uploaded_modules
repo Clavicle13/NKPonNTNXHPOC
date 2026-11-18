@@ -1,0 +1,15 @@
+#!/bin/bash
+
+export PROJECT="nkpdemo"
+export REGISTRY_URL=$(echo "https://$(kubectl -n kommander get kommandercluster practice1 -o jsonpath='{.status.ingress.address}'):5000")
+export REGISTRY_USERNAME='admin'
+export REGISTRY_PASSWORD=$(kubectl get secrets -n ncr-system harbor-admin-password -o jsonpath='{.data.HARBOR_ADMIN_PASSWORD}' | base64 -d)
+
+echo "Detected Harbor Registry URL is ${REGISTRY_URL}"
+echo "Detected Harbor Registry Password is  ${REGISTRY_PASSWORD}"
+echo "Proceeding to check bundles ..."
+
+for page in 1 2 3 4 5; do
+  curl -sk -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" "${REGISTRY_URL}/api/v2.0/projects/${PROJECT}/repositories?page=$page&page_size=100" \
+    | python3 -c 'import sys, json; [print(r["name"]) for r in json.load(sys.stdin)]'
+done | sort
