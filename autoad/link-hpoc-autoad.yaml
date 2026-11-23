@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hpoc-autoad-bind-secret
+  namespace: kommander
+type: Opaque
+stringData:
+  password: "nx2Tech693!"
+---
+apiVersion: dex.mesosphere.io/v1alpha1
+kind: Connector
+metadata:
+  name: hpoc-autoad
+  namespace: kommander
+spec:
+  displayName: "hpoc-autoad"
+  enabled: true
+  type: ldap
+  ldap:
+    host: 10.42.62.6:389
+    insecureNoSSL: true
+    startTLS: false
+    bindDN: cn=Administrator,cn=Users,dc=ntnxlab,dc=local
+    bindSecretRef:
+      name: hpoc-autoad-bind-secret
+    userSearch:
+      baseDN: dc=ntnxlab,dc=local
+      username: sAMAccountName
+      idAttr: DN
+      emailAttr: userPrincipalName
+      nameAttr: sAMAccountName
+    groupSearch:
+      baseDN: dc=ntnxlab,dc=local
+      filter: "(objectClass=group)"
+      nameAttr: cn
+      userMatchers:
+        - userAttr: DN
+          groupAttr: member
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: instructor-autoad-cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: instructor@ntnxlab.local
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: instructor-autoad-kommander-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dkp-kommander-admin
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: instructor@ntnxlab.local
